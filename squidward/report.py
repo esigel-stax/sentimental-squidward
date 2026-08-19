@@ -178,3 +178,30 @@ def save(d: Dict[str, Any], out_dir: str = "out") -> str:
     with open(path, "w") as f:
         f.write(render(d))
     return path
+
+
+def save_group_files(d: Dict[str, Any], out_dir: str = "out") -> Dict[str, str]:
+    """One CSV per sentiment group. Returns {(source, group name): path}."""
+    import csv
+
+    cols = ["platform", "author", "sentiment", "intensity", "engagement",
+            "engagement_label", "created_at", "context", "url", "text"]
+    folder = os.path.join(out_dir, "comments")
+    os.makedirs(folder, exist_ok=True)
+    paths: Dict[str, str] = {}
+
+    for source, sd in d.get("by_source", {}).items():
+        for g in sd.get("groups", []):
+            slug = "".join(c if c.isalnum() else "-" for c in g["name"]).strip("-").lower()
+            path = os.path.join(folder, f"{source}-{slug[:48]}.csv")
+            with open(path, "w", newline="", encoding="utf-8-sig") as f:
+                w = csv.DictWriter(f, fieldnames=cols, extrasaction="ignore",
+                                   quoting=csv.QUOTE_ALL)
+                w.writeheader()
+                for m in g["mentions"]:
+                    row = dict(m)
+                    row["platform"] = source
+                    row["text"] = " ".join((m.get("text") or "").split())
+                    w.writerow(row)
+            paths[f"{source}/{g['name']}"] = path
+    return paths

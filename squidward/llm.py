@@ -24,8 +24,8 @@ litellm.suppress_debug_info = True
 # Cheap + fast for the per-mention fan-out; strong for the one synthesis call.
 SCORER = os.getenv("SQUIDWARD_SCORER_MODEL", "anthropic/claude-haiku-4-5")
 SCORER_BACKUP = os.getenv("SQUIDWARD_SCORER_BACKUP", "anthropic/claude-sonnet-5")
-GROUPER = os.getenv("SQUIDWARD_GROUPER_MODEL", "anthropic/claude-opus-5")
-GROUPER_BACKUP = os.getenv("SQUIDWARD_GROUPER_BACKUP", "anthropic/claude-sonnet-5")
+GROUPER = os.getenv("SQUIDWARD_GROUPER_MODEL", "anthropic/claude-sonnet-5")
+GROUPER_BACKUP = os.getenv("SQUIDWARD_GROUPER_BACKUP", "anthropic/claude-opus-5")
 
 
 def build_router() -> Router:

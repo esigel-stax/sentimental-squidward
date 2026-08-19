@@ -18,31 +18,25 @@ OUT_DIR = os.path.join(ROOT, "out")
 DOT = {"positive": "+", "negative": "-", "mixed": "~", "neutral": "."}
 
 
-def render(d: dict) -> str:
-    out = ["", "🦑 SENTIMENTAL SQUIDWARD", "=" * 70]
-    if d.get("contrast"):
-        out += ["", _wrap(d["contrast"]["headline"], 68)]
-
+def render(d: dict, files: dict) -> str:
+    out = ["", "🦑 SENTIMENTAL SQUIDWARD",
+           f"   {d.get('total_on_topic', 0)} comments worth reading, out of "
+           f"{d.get('total_scanned', 0)} I had to read.", "=" * 70]
     for source, sd in d["by_source"].items():
-        out += ["", f"{source.upper()}  ({sd['on_topic']}/{sd['scanned']} on-topic)",
-                "-" * 70]
+        out += ["", f"{source}  —  {sd['on_topic']} comments"]
         if not sd["groups"]:
-            out.append("  too thin to group")
+            out.append("   nothing worth grouping")
             continue
-        for i, g in enumerate(sd["groups"], 1):
-            out.append(f"  {DOT.get(g['dominant_sentiment'], '.')} {i}. {g['name']}"
-                       f"  [{g['dominant_sentiment']}, {g['count']}, {g['share']:.0f}%]")
-            for m in g["mentions"][:3]:
-                eng = (f"{m['engagement']} {m['engagement_label']}"
-                       if m["engagement"] else "-")
-                out.append(f"      [{eng}] {m['author']}: {_wrap(m['summary'], 56, ' ' * 8)}")
-                out.append(f"        {m['url']}")
-            out.append("")
-
+        for g in sd["groups"]:
+            out.append(f"   {DOT.get(g['dominant_sentiment'], '.')} {g['name']}"
+                       f"  [{g['dominant_sentiment']}, {g['count']}]")
+            f = files.get(f"{source}/{g['name']}")
+            if f:
+                out.append(f"     {f}")
     if d.get("unavailable"):
-        out.append("not reachable:")
+        out.append("")
         for k, v in d["unavailable"].items():
-            out.append(f"  {k}: {v[:80]}")
+            out.append(f"   {k} unavailable")
     out += ["", "=" * 70, ""]
     return "\n".join(out)
 
@@ -98,9 +92,10 @@ def main(argv=None) -> int:
         print(json.dumps(d, indent=2))
         return 0
 
-    print(render(d))
+    files = report_mod.save_group_files(d, OUT_DIR)
+    print(render(d, files))
     print(f"  wrote {path}")
     print(f"  and  {os.path.join(OUT_DIR, 'latest.json')}  (what the bot reads)")
-    print(f"  and  {report_mod.save(d, OUT_DIR)}  (full comment record)")
+    print(f"  and  {report_mod.save(d, OUT_DIR)}  (full record)")
     print(f"  {d['spend']['summary']}\n")
     return 0

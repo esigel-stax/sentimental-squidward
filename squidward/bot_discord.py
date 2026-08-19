@@ -58,29 +58,17 @@ def _clip(text: str, n: int) -> str:
 # --- rendering ------------------------------------------------------------
 
 def source_embed(source: str, data: Dict[str, Any], generated_at: str) -> discord.Embed:
-    e = discord.Embed(
-        title=f"{SOURCE_EMOJI.get(source, '•')} {source}",
-        color=discord.Color.from_rgb(88, 101, 242),
-    )
-    if data.get("thin") or not data.get("groups"):
-        e.description = (f"Only {data.get('on_topic', 0)} on-topic mentions of "
-                         f"{data.get('scanned', 0)}. Not enough to group.")
+    e = discord.Embed(title=f"{SOURCE_EMOJI.get(source, '•')} {source} — "
+                            f"{data.get('on_topic', 0)} comments",
+                      color=discord.Color.from_rgb(88, 101, 242))
+    if not data.get("groups"):
+        e.description = "Nothing worth grouping this week."
         return e
-
-    for i, g in enumerate(data["groups"], 1):
-        dot = SENTIMENT_DOT.get(g["dominant_sentiment"], "⚪")
-        lines = []
-        for m in g["mentions"][:3]:
-            eng = f"{m['engagement']} {m['engagement_label']}" if m["engagement"] else "—"
-            lines.append(f"[`{eng}`]({m['url']}) **{_clip(m['author'], 24)}**: "
-                         f"{_clip(m['text'], 150)}")
-        block = "\n".join(lines)[:1020]
-        e.add_field(
-            name=f"{dot} {i}. {_clip(g['name'], 70)} · {g['count']} ({g['share']:.0f}%)",
-            value=block or "—", inline=False)
-
-    e.set_footer(text=f"{data.get('on_topic', 0)}/{data.get('scanned', 0)} on-topic "
-                      f"· buttons for full quotes · in testing")
+    e.description = "\n".join(
+        f"{SENTIMENT_DOT.get(g['dominant_sentiment'], '⚪')} **{_clip(g['name'], 70)}** — "
+        f"{g['dominant_sentiment']}, {g['count']}"
+        for g in data["groups"])
+    e.set_footer(text="press a button for that group's comments · in testing")
     return e
 
 
@@ -108,29 +96,23 @@ def quotes_embed(source: str, group: Dict[str, Any]) -> discord.Embed:
 
 
 def about_embed(data: Optional[Dict[str, Any]]) -> discord.Embed:
-    sources = _available_sources(data)
-    n = NUMBER_WORD.get(len(sources), str(len(sources)))
     e = discord.Embed(
         title="🦑 Sentimental Squidward",
         description=(
-            "Mr. Krabs asked me to find out how the internet feels about "
-            "LiteLLM. Sigh — another day, another migraine. Here we are.\n\n"
-            f"Each week I read {n if sources else 'several'} platform"
-            f"{'' if len(sources) == 1 else 's'} — "
-            f"{', '.join(sources) if sources else 'none yet'} — score every "
-            "comment for sentiment, sort each platform into its **top 3 "
-            "sentiment groups**, and show the three most-upvoted comments in "
-            "each. Ranking happens within a platform only; upvotes and "
-            "reactions are not the same currency.\n\n"
-            "**LiteLLM** switches between a cheap model for the per-comment "
-            "pass and a better model for the grouping, with automatic failover "
-            "between them.\n\n"
-            f"_{BETA_NOTE}_"
+            "Mr. Krabs asked me analyze the sentiment on GitHub, HackerNews, "
+            "and Twitter. Another day, another migraine!\n\n"
+            "**Methodology:** I use LiteLLM to alternate between Haiku 4.5 to "
+            "pull relevant comments and Sonnet 5 to group by sentiment "
+            "(positive, negative, mixed), then Sonnet summarizes the main "
+            "feedback by sentiment group. Source comments linked for each "
+            "grouping.\n\n"
+            "**Caveat:** Squidwardbot is in testing. If something seems wrong, "
+            "it probably is. Oh, my aching tentacles"
         ),
         color=discord.Color.from_rgb(88, 101, 242),
     )
     if data:
-        e.set_footer(text=f"{data.get('total_on_topic', 0)} on-topic of "
+        e.set_footer(text=f"{data.get('total_on_topic', 0)} comments of "
                           f"{data.get('total_scanned', 0)} scanned · "
                           f"{data.get('generated_at', '')[:10]}")
     return e
