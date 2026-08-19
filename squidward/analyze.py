@@ -79,14 +79,14 @@ def _extract_json(text: str) -> dict:
         text = re.sub(r"^```[a-z]*\n?", "", text)
         text = re.sub(r"\n?```$", "", text).strip()
     try:
-        return json.loads(text)
+        return json.loads(text, strict=False)
     except json.JSONDecodeError:
         pass
     for opener, closer in (("{", "}"), ("[", "]")):
         start, end = text.find(opener), text.rfind(closer)
         if start != -1 and end > start:
             try:
-                return json.loads(text[start:end + 1])
+                return json.loads(text[start:end + 1], strict=False)
             except json.JSONDecodeError:
                 continue
     raise ValueError(f"could not parse JSON from model output: {text[:200]!r}")
@@ -106,7 +106,7 @@ def _unwrap(data: Any, expected: set, depth: int = 5) -> Any:
             inner = next(iter(data.values()))
             if isinstance(inner, str):
                 try:
-                    inner = json.loads(inner)
+                    inner = json.loads(inner, strict=False)
                 except json.JSONDecodeError:
                     return data
             data = inner

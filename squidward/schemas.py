@@ -33,7 +33,7 @@ def _as_list(v: Any) -> Any:
             v = inner
     if isinstance(v, str):
         try:
-            return json.loads(v)
+            return json.loads(v, strict=False)
         except json.JSONDecodeError as e:
             # A double-encoded field that won't parse is almost always a
             # response cut off at max_tokens. Say that, rather than letting
