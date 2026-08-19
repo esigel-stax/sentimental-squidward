@@ -92,6 +92,32 @@ def _extract_json(text: str) -> dict:
     raise ValueError(f"could not parse JSON from model output: {text[:200]!r}")
 
 
+# litellm renders `response_format` into an Anthropic tool schema, and what comes
+# back has now been observed in three shapes across models: the object itself, a
+# double-encoded JSON string, and the tool-call envelope with the payload under
+# `parameters`. Accept all of them rather than pinning to one model's habit.
+ENVELOPE_KEYS = ("parameters", "arguments", "input", "properties",
+                 "result", "response", "output")
+
+
+def _unwrap(data: Any, depth: int = 4) -> Any:
+    """Peel single-key tool-call envelopes off the real payload."""
+    for _ in range(depth):
+        if not (isinstance(data, dict) and len(data) == 1):
+            break
+        key = next(iter(data))
+        if key not in ENVELOPE_KEYS:
+            break
+        inner = data[key]
+        if isinstance(inner, str):
+            try:
+                inner = json.loads(inner)
+            except json.JSONDecodeError:
+                break
+        data = inner
+    return data
+
+
 def _complete(router, model: str, system: str, user: str,
               schema, spend: Spend) -> dict:
     """One structured call. Uses native JSON-schema output where the model
@@ -110,7 +136,7 @@ def _complete(router, model: str, system: str, user: str,
 
     response = router.completion(**kwargs)
     spend.record(response)
-    return _extract_json(response.choices[0].message.content)
+    return _unwrap(_extract_json(response.choices[0].message.content))
 
 
 # --- stage 1 --------------------------------------------------------------
