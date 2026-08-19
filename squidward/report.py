@@ -188,6 +188,11 @@ def save_group_files(d: Dict[str, Any], out_dir: str = "out") -> Dict[str, str]:
             "engagement_label", "created_at", "context", "url", "text"]
     folder = os.path.join(out_dir, "comments")
     os.makedirs(folder, exist_ok=True)
+    # Group names change between runs, so stale files would otherwise accumulate
+    # and the repo would carry links to last week's themes.
+    for stale in os.listdir(folder):
+        if stale.endswith(".csv"):
+            os.remove(os.path.join(folder, stale))
     paths: Dict[str, str] = {}
 
     for source, sd in d.get("by_source", {}).items():

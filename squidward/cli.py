@@ -30,7 +30,21 @@ METHOD = ("Methodology: I use LiteLLM to switch between two models: Haiku 4.5 "
 CAVEAT = ("Squidwardbot is in testing. If something seems wrong, it probably is. "
           "Oh, my aching tentacles")
 
-REPO = "https://github.com/esigel-stax/sentimental-squidward"
+def _repo_url() -> str:
+    """Read origin from git so the links follow whoever forked this."""
+    import subprocess
+    try:
+        url = subprocess.check_output(["git", "-C", ROOT, "remote", "get-url", "origin"],
+                                      stderr=subprocess.DEVNULL, text=True).strip()
+    except Exception:
+        return ""
+    if url.startswith("git@github.com:"):
+        url = "https://github.com/" + url[len("git@github.com:"):]
+    return url[:-4] if url.endswith(".git") else url
+
+
+REPO = _repo_url()
+BRANCH = os.getenv("SQUIDWARD_BRANCH", "main")
 
 
 def render(d: dict, files: dict) -> str:
@@ -51,12 +65,14 @@ def render(d: dict, files: dict) -> str:
                        f"{g['name']}")
             f = files.get(f"{source}/{g['name']}")
             if f:
-                out.append(f"  {'':<{width}}       {os.path.relpath(f, ROOT)}")
+                rel = os.path.relpath(f, ROOT)
+                link = f"{REPO}/blob/{BRANCH}/{rel}" if REPO else rel
+                out.append(f"  {'':<{width}}       {link}")
 
     if d.get("unavailable"):
         out += [""] + [f"{k} unavailable" for k in d["unavailable"]]
 
-    out += ["", f"Code: {REPO}", "", _wrap(CAVEAT, 76), ""]
+    out += ["", f"Code: {REPO}" if REPO else "", "", _wrap(CAVEAT, 76), ""]
     return "\n".join(out)
 
 

@@ -1,0 +1,2 @@
+﻿"platform","author","sentiment","intensity","engagement","engagement_label","created_at","context","url","text"
+"hn","murlax","neutral","0.4","476","story points","2026-08-17T02:46:23Z","HN comment on ""Stripe Clinches over $7B Deal to Buy AI Firm OpenRouter""","https://news.ycombinator.com/item?id=49326020","Isn't this what LiteLLM is doing? And is Open Source? Maybe I am asking a dumb question because this is the age-old SaaS vs OSS debate, but I am struggling to find the angle here."

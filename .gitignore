@@ -1,4 +1,10 @@
 .env
-out/
 __pycache__/
 *.pyc
+
+# Generated output: keep the published artefacts, drop the working files.
+out/*
+!out/comments/
+out/comments/*
+!out/comments/*.csv
+!out/report.html
