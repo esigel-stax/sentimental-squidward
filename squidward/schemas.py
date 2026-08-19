@@ -25,6 +25,12 @@ def _as_list(v: Any) -> Any:
     shapes — this is the same defensive posture litellm itself takes when
     normalizing provider responses.
     """
+    # {"groups": {"groups": [...]}} — the tool path sometimes repeats the field
+    # name one level down. Unwrap a single-key dict whose value is the list.
+    if isinstance(v, dict) and len(v) == 1:
+        inner = next(iter(v.values()))
+        if isinstance(inner, (list, str)):
+            v = inner
     if isinstance(v, str):
         try:
             return json.loads(v)

@@ -92,29 +92,26 @@ def _extract_json(text: str) -> dict:
     raise ValueError(f"could not parse JSON from model output: {text[:200]!r}")
 
 
-# litellm renders `response_format` into an Anthropic tool schema, and what comes
-# back has now been observed in three shapes across models: the object itself, a
-# double-encoded JSON string, and the tool-call envelope with the payload under
-# `parameters`. Accept all of them rather than pinning to one model's habit.
-ENVELOPE_KEYS = ("parameters", "arguments", "input", "properties",
-                 "result", "response", "output")
-
-
-def _unwrap(data: Any, depth: int = 4) -> Any:
-    """Peel single-key tool-call envelopes off the real payload."""
+# litellm renders `response_format` into an Anthropic tool schema. On the legacy
+# tool-call path (which older litellm takes for Claude 5 — see
+# docs/structured-output-bug.md) the payload comes back wrapped in a single-key
+# envelope whose name the model invents: "parameters", "groups", even
+# "parameter name". Rather than chase names, unwrap any single-key envelope
+# until the object actually carries the fields the schema asks for.
+def _unwrap(data: Any, expected: set, depth: int = 5) -> Any:
     for _ in range(depth):
-        if not (isinstance(data, dict) and len(data) == 1):
-            break
-        key = next(iter(data))
-        if key not in ENVELOPE_KEYS:
-            break
-        inner = data[key]
-        if isinstance(inner, str):
-            try:
-                inner = json.loads(inner)
-            except json.JSONDecodeError:
-                break
-        data = inner
+        if isinstance(data, dict) and expected.intersection(data):
+            return data                      # already the real payload
+        if isinstance(data, dict) and len(data) == 1:
+            inner = next(iter(data.values()))
+            if isinstance(inner, str):
+                try:
+                    inner = json.loads(inner)
+                except json.JSONDecodeError:
+                    return data
+            data = inner
+            continue
+        return data
     return data
 
 
@@ -136,7 +133,8 @@ def _complete(router, model: str, system: str, user: str,
 
     response = router.completion(**kwargs)
     spend.record(response)
-    return _unwrap(_extract_json(response.choices[0].message.content))
+    return _unwrap(_extract_json(response.choices[0].message.content),
+                   set(schema.model_fields))
 
 
 # --- stage 1 --------------------------------------------------------------
