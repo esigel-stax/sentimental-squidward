@@ -18,26 +18,45 @@ OUT_DIR = os.path.join(ROOT, "out")
 DOT = {"positive": "+", "negative": "-", "mixed": "~", "neutral": "."}
 
 
+INTRO = ("Mr. Krabs asked me analyze the LiteLLM sentiment on GitHub, "
+         "HackerNews, and Twitter. Another day, another migraine!")
+
+METHOD = ("Methodology: I use LiteLLM to switch between two models: Haiku 4.5 "
+          "scores every comment for relevance and sentiment (positive, negative, "
+          "mixed, neutral), then Sonnet 5 sorts each platform's comments into its "
+          "three main sentiment groups and summarizes the feedback in each. "
+          "Source comments linked for every grouping.")
+
+CAVEAT = ("Squidwardbot is in testing. If something seems wrong, it probably is. "
+          "Oh, my aching tentacles")
+
+REPO = "https://github.com/esigel-stax/sentimental-squidward"
+
+
 def render(d: dict, files: dict) -> str:
-    out = ["", "🦑 SENTIMENTAL SQUIDWARD",
-           f"   {d.get('total_on_topic', 0)} comments worth reading, out of "
-           f"{d.get('total_scanned', 0)} I had to read.", "=" * 70]
+    """The finished post. What this prints is what gets pasted."""
+    out = ["", "SENTIMENTAL SQUIDWARD", "",
+           _wrap(INTRO, 76), "", _wrap(METHOD, 76), "",
+           f"{d.get('total_on_topic', 0)} comments worth reading, out of "
+           f"{d.get('total_scanned', 0)} I had to read."]
+
     for source, sd in d["by_source"].items():
-        out += ["", f"{source}  —  {sd['on_topic']} comments"]
+        out += ["", f"{source.upper()} - {sd['on_topic']}"]
         if not sd["groups"]:
-            out.append("   nothing worth grouping")
+            out.append("  nothing worth grouping")
             continue
+        width = max(len(g["dominant_sentiment"]) for g in sd["groups"])
         for g in sd["groups"]:
-            out.append(f"   {DOT.get(g['dominant_sentiment'], '.')} {g['name']}"
-                       f"  [{g['dominant_sentiment']}, {g['count']}]")
+            out.append(f"  {g['dominant_sentiment']:<{width}}  {g['count']:>2}   "
+                       f"{g['name']}")
             f = files.get(f"{source}/{g['name']}")
             if f:
-                out.append(f"     {f}")
+                out.append(f"  {'':<{width}}       {os.path.relpath(f, ROOT)}")
+
     if d.get("unavailable"):
-        out.append("")
-        for k, v in d["unavailable"].items():
-            out.append(f"   {k} unavailable")
-    out += ["", "=" * 70, ""]
+        out += [""] + [f"{k} unavailable" for k in d["unavailable"]]
+
+    out += ["", f"Code: {REPO}", "", _wrap(CAVEAT, 76), ""]
     return "\n".join(out)
 
 

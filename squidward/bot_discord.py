@@ -99,8 +99,8 @@ def about_embed(data: Optional[Dict[str, Any]]) -> discord.Embed:
     e = discord.Embed(
         title="🦑 Sentimental Squidward",
         description=(
-            "Mr. Krabs asked me analyze the sentiment on GitHub, HackerNews, "
-            "and Twitter. Another day, another migraine!\n\n"
+            "Mr. Krabs asked me analyze the LiteLLM sentiment on GitHub, "
+            "HackerNews, and Twitter. Another day, another migraine!\n\n"
             "**Methodology:** I use LiteLLM to switch between two models: "
             "Haiku 4.5 scores every comment for relevance and sentiment "
             "(positive, negative, mixed, neutral), then Sonnet 5 sorts each "
