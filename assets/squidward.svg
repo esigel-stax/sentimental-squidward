@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1b2a33"/><stop offset="100%" stop-color="#0d161c"/>
+    </linearGradient>
+    <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8fd3c7"/><stop offset="55%" stop-color="#5fb3a6"/>
+      <stop offset="100%" stop-color="#3d8b81"/>
+    </linearGradient>
+    <linearGradient id="nose" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6fc0b3"/><stop offset="100%" stop-color="#357a71"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+
+  <!-- Discord crops to a circle; keep every limb inside the inscribed one -->
+  <g transform="translate(512 512) scale(0.80) translate(-512 -496)">
+
+  <!-- tentacles: read as a silhouette even at 40px -->
+  <g fill="url(#skin)">
+    <path d="M300 690 q-70 130 -34 250 q4 14 -12 16 q-18 2 -26 -14 q-52 -116 6 -258 z"/>
+    <path d="M724 690 q70 130 34 250 q-4 14 12 16 q18 2 26 -14 q52 -116 -6 -258 z"/>
+    <path d="M420 726 q-40 150 -10 232 q6 16 -12 20 q-18 4 -26 -14 q-38 -96 -6 -244 z"/>
+    <path d="M604 726 q40 150 10 232 q-6 16 12 20 q18 4 26 -14 q38 -96 6 -244 z"/>
+  </g>
+
+  <!-- head -->
+  <path d="M512 128
+           q182 0 244 176
+           q46 132 22 268
+           q-22 128 -110 172
+           q-72 36 -156 36
+           q-84 0 -156 -36
+           q-88 -44 -110 -172
+           q-24 -136 22 -268
+           q62 -176 244 -176 z"
+        fill="url(#skin)"/>
+
+  <!-- brow: the entire personality lives in this angle -->
+  <g fill="#2f6b64">
+    <path d="M292 352 q104 -46 190 -8 q14 6 8 22 q-6 16 -22 10 q-72 -30 -160 8 q-16 7 -24 -10 q-8 -16 8 -22 z"/>
+    <path d="M732 352 q-104 -46 -190 -8 q-14 6 -8 22 q6 16 22 10 q72 -30 160 8 q16 7 24 -10 q8 -16 -8 -22 z"/>
+  </g>
+
+  <!-- eyes, heavy-lidded and looking away from you -->
+  <g>
+    <ellipse cx="404" cy="440" rx="96" ry="86" fill="#fdfdf7"/>
+    <ellipse cx="620" cy="440" rx="96" ry="86" fill="#fdfdf7"/>
+    <ellipse cx="378" cy="452" rx="30" ry="34" fill="#16232b"/>
+    <ellipse cx="594" cy="452" rx="30" ry="34" fill="#16232b"/>
+    <!-- lids drooping to exactly half-mast -->
+    <path d="M308 440 a96 86 0 0 1 192 0 l0 -16 a96 86 0 0 0 -192 0 z" fill="#4e9f94"/>
+    <path d="M524 440 a96 86 0 0 1 192 0 l0 -16 a96 86 0 0 0 -192 0 z" fill="#4e9f94"/>
+    <rect x="308" y="386" width="192" height="56" rx="26" fill="#5fb3a6"/>
+    <rect x="524" y="386" width="192" height="56" rx="26" fill="#5fb3a6"/>
+  </g>
+
+  <!-- nose -->
+  <path d="M512 452 q34 0 40 54 q10 92 -6 156 q-8 32 -34 32 q-26 0 -34 -32 q-16 -64 -6 -156 q6 -54 40 -54 z"
+        fill="url(#nose)"/>
+
+  <!-- mouth: a flat, disappointed line -->
+  <path d="M424 754 q88 -26 176 0" stroke="#2f6b64" stroke-width="22"
+        stroke-linecap="round" fill="none"/>
+  </g>
+</svg>

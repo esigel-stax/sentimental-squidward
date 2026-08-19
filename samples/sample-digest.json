@@ -1,0 +1,239 @@
+{
+  "bot": "Sentimental Squidward",
+  "generated_at": "2026-08-19T17:20:00+00:00",
+  "days": 7,
+  "sources_requested": [
+    "hn",
+    "github",
+    "twitter"
+  ],
+  "unavailable": {
+    "twitter": "X returned 403 for /2/tweets/search/recent. The Free access tier is write-only \u2014 search requires Basic or above."
+  },
+  "total_scanned": 91,
+  "total_on_topic": 38,
+  "contrast": {
+    "headline": "Two rooms, two verdicts, and neither one has met the other.",
+    "contrast": "Hacker News is where LiteLLM gets compared to things it did not ask to be compared to \u2014 a competitor launch thread produced both the strongest endorsement and the harshest dismissal of the week, from people with no stake in either. GitHub produces none of that: everyone there already adopted, so its negativity is defect reporting, not doubt. Operational friction \u2014 'not trivial to run', Python packaging, the database requirement \u2014 appears on HN as a reason people chose something else, and appears on GitHub not at all. That gap is the finding."
+  },
+  "by_source": {
+    "hn": {
+      "scanned": 31,
+      "on_topic": 22,
+      "thin": false,
+      "headline": "Someone launched a competitor and the whole neighbourhood had opinions about me.",
+      "groups": [
+        {
+          "name": "Ops friction is the reason people leave",
+          "dominant_sentiment": "negative",
+          "count": 9,
+          "share": 40.9,
+          "what_people_say": "The complaint is never the feature set \u2014 it is what it takes to run. Python dependency management, the database requirement, and config-file-only operation come up repeatedly, usually alongside an admission that LiteLLM is the more mature product.",
+          "why_it_matters": "These users evaluated LiteLLM, agreed it was better, and chose otherwise on packaging alone. A single-binary distribution would close the gap they name.",
+          "squidward_says": "They like everything about me except the experience of using me.",
+          "mentions": [
+            {
+              "author": "apatheticonion",
+              "url": "https://news.ycombinator.com/item?id=49000176",
+              "text": "Yeah I looked at it, LiteLLM is functionally more mature. The only reason I didn't go for it is I'm not a fan of Python dependency management, Bifrost is just a single executable that uses nearly no memory and is lightning fast.",
+              "created_at": "2026-08-18T00:00:00Z",
+              "context": "HN comment on \"Bifrost: open-source LLM gateway\"",
+              "engagement": 877,
+              "engagement_label": "story points",
+              "sentiment": "negative",
+              "intensity": 0.7,
+              "topic": "",
+              "summary": "Chose a competitor purely over Python packaging."
+            },
+            {
+              "author": "aftbit",
+              "url": "https://news.ycombinator.com/item?id=49001243",
+              "text": "Can you configure Bifrost using entirely config files without the web interface? Can it run without a database or anything stateful? I'm using LiteLLM but it is not trivial to run.",
+              "created_at": "2026-08-18T00:00:00Z",
+              "context": "HN comment on \"Bifrost: open-source LLM gateway\"",
+              "engagement": 877,
+              "engagement_label": "story points",
+              "sentiment": "negative",
+              "intensity": 0.7,
+              "topic": "",
+              "summary": "Current user: works, but not trivial to run."
+            },
+            {
+              "author": "CuriouslyC",
+              "url": "https://news.ycombinator.com/item?id=49001644",
+              "text": "LiteLLM is bad. Shit performance, buggy, and none of it surprising if you look at the tangled mess that is their codebase.",
+              "created_at": "2026-08-18T00:00:00Z",
+              "context": "HN comment on \"Bifrost: open-source LLM gateway\"",
+              "engagement": 877,
+              "engagement_label": "story points",
+              "sentiment": "negative",
+              "intensity": 0.7,
+              "topic": "",
+              "summary": "Blunt dismissal on performance and code quality."
+            }
+          ]
+        },
+        {
+          "name": "Quietly, it is the default",
+          "dominant_sentiment": "positive",
+          "count": 7,
+          "share": 31.8,
+          "what_people_say": "Unprompted, in threads about something else, people report LiteLLM as the thing their employer already standardised on for internal model access \u2014 usually as an aside, which is what makes it credible.",
+          "why_it_matters": "This is incumbency, and it is the strongest asset in the corpus. It appears nowhere on GitHub, because GitHub only hears from people with a problem.",
+          "squidward_says": "Apparently I am load-bearing. Nobody thought to mention it to me.",
+          "mentions": [
+            {
+              "author": "andersonpico",
+              "url": "https://news.ycombinator.com/item?id=48986516",
+              "text": "Every company that I've worked with that provided models internally did so through LiteLLM and offered both Anthropic and OpenAI models so it was trivial to switch between them.",
+              "created_at": "2026-08-18T00:00:00Z",
+              "context": "HN comment on \"Ask HN: how do you serve models internally?\"",
+              "engagement": 995,
+              "engagement_label": "story points",
+              "sentiment": "positive",
+              "intensity": 0.7,
+              "topic": "",
+              "summary": "Reports LiteLLM as the internal default everywhere they've worked."
+            },
+            {
+              "author": "Aurornis",
+              "url": "https://news.ycombinator.com/item?id=48987964",
+              "text": "I like all the different comments in this thread saying that most companies do X, where X is a different answer from each person: LiteLLM, GitHub Copilot, Claude Code.",
+              "created_at": "2026-08-18T00:00:00Z",
+              "context": "HN comment on \"Ask HN: how do you serve models internally?\"",
+              "engagement": 995,
+              "engagement_label": "story points",
+              "sentiment": "neutral",
+              "intensity": 0.7,
+              "topic": "",
+              "summary": "Notes LiteLLM among the named defaults."
+            }
+          ]
+        },
+        {
+          "name": "Gateway shopping season",
+          "dominant_sentiment": "mixed",
+          "count": 6,
+          "share": 27.3,
+          "what_people_say": "People are actively comparing gateways \u2014 Bifrost, Bedrock, OpenRouter \u2014 and LiteLLM is the reference point they measure against. The tone is evaluative rather than loyal.",
+          "why_it_matters": "Being the benchmark is good; being the benchmark during a competitor's launch week is a retention risk worth watching.",
+          "squidward_says": "I am the one they compare the others to. It is not a compliment, it is a starting price.",
+          "mentions": [
+            {
+              "author": "robbiet480",
+              "url": "https://news.ycombinator.com/item?id=49000113",
+              "text": "Did you look at LiteLLM at all? It seems fine but Bifrost looks interesting too.",
+              "created_at": "2026-08-18T00:00:00Z",
+              "context": "HN comment on \"Bifrost: open-source LLM gateway\"",
+              "engagement": 877,
+              "engagement_label": "story points",
+              "sentiment": "mixed",
+              "intensity": 0.7,
+              "topic": "",
+              "summary": "Treats LiteLLM as the baseline while shopping."
+            },
+            {
+              "author": "jdgoesmarching",
+              "url": "https://news.ycombinator.com/item?id=49326735",
+              "text": "AWS Bedrock doesn't even try to stay on top of new open source models or their API capabilities. We've also run into all kinds of frustrating rate limiting and slowness issues.",
+              "created_at": "2026-08-18T00:00:00Z",
+              "context": "HN comment on \"Stripe will reportedly acquire OpenRouter\"",
+              "engagement": 475,
+              "engagement_label": "story points",
+              "sentiment": "mixed",
+              "intensity": 0.7,
+              "topic": "",
+              "summary": "Frustrated with Bedrock; weighing alternatives."
+            }
+          ]
+        }
+      ]
+    },
+    "github": {
+      "scanned": 60,
+      "on_topic": 16,
+      "thin": false,
+      "headline": "Sixty comments. Sixteen were about the software. I counted twice.",
+      "groups": [
+        {
+          "name": "The review queue, still",
+          "dominant_sentiment": "negative",
+          "count": 7,
+          "share": 43.8,
+          "what_people_say": "Contributors with green CI, signed CLAs and every bot satisfied, bumping the same PRs across multiple days. Several state plainly that they are blocked on maintainer approval and nothing else.",
+          "why_it_matters": "Not a patch, a process. One contributor arrived with enterprise customers and an offer to co-market, and is still waiting.",
+          "squidward_says": "They are so polite about being ignored. I could never.",
+          "mentions": [
+            {
+              "author": "deepanshululla",
+              "url": "https://github.com/BerriAI/litellm/pull/36657#issuecomment-5343507117",
+              "text": "All automated gates are green: CI fully passing, Greptile 5/5 at current HEAD, veria-ai 0/10 risk, all 5 review threads resolved, no merge conflicts. Ready for maintainer review whenever convenient.",
+              "created_at": "2026-08-18T00:00:00Z",
+              "context": "comment on BerriAI/litellm",
+              "engagement": 1,
+              "engagement_label": "reactions",
+              "sentiment": "negative",
+              "intensity": 0.7,
+              "topic": "",
+              "summary": "Every gate green; blocked only on maintainer review."
+            }
+          ]
+        },
+        {
+          "name": "Provider translation edges",
+          "dominant_sentiment": "negative",
+          "count": 5,
+          "share": 31.3,
+          "what_people_say": "tool_choice mapping, Gemini's camelCase systemInstruction, and wrong capability flags in the model catalog. Every one lands on the seam the gateway exists to hide.",
+          "why_it_matters": "Users hitting these don't file 'mapping bug' \u2014 they conclude the abstraction leaks and go shopping. See the HN group above.",
+          "squidward_says": "One interface for a hundred providers. The providers were not consulted.",
+          "mentions": [
+            {
+              "author": "thehaffk",
+              "url": "https://github.com/BerriAI/litellm/issues/32505#issuecomment-5342911159",
+              "text": "Proxy config routes gpt-5.4 through the Responses API bridge... no tool_choice 200, auto 400, any 400, none 400, tool 200. The error text is worth quoting, because it sends people looking in the wrong place.",
+              "created_at": "2026-08-18T00:00:00Z",
+              "context": "comment on BerriAI/litellm",
+              "engagement": 0,
+              "engagement_label": "reactions",
+              "sentiment": "negative",
+              "intensity": 0.7,
+              "topic": "",
+              "summary": "tool_choice mapping returns 400s with misleading errors."
+            }
+          ]
+        },
+        {
+          "name": "Proxy state, quietly on fire",
+          "dominant_sentiment": "negative",
+          "count": 4,
+          "share": 25.0,
+          "what_people_say": "A /health endpoint leaking aws_session_token, a budget reset computed for the year 2083, and 404 retries cascading into fleet-wide 5xx. Small group, worst contents.",
+          "why_it_matters": "These only bite at scale, in production, on the deployments that pay. Two are security-shaped.",
+          "squidward_says": "A credential leak and a budget that resets in 2083. At least the budget will outlive the incident.",
+          "mentions": [
+            {
+              "author": "Siraj637909",
+              "url": "https://github.com/BerriAI/litellm/pull/37090#issuecomment-5341423372",
+              "text": "GET /health was leaking extra_headers, headers, and aws_session_token in plaintext for every deployment row. This is a 3-line, low-risk security fix.",
+              "created_at": "2026-08-18T00:00:00Z",
+              "context": "comment on BerriAI/litellm",
+              "engagement": 0,
+              "engagement_label": "reactions",
+              "sentiment": "negative",
+              "intensity": 0.7,
+              "topic": "",
+              "summary": "Health endpoint leaks AWS session tokens in plaintext."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "spend": {
+    "summary": "14 calls \u00b7 31,204 in / 8,806 out tokens \u00b7 $0.0729",
+    "usd": 0.0729,
+    "calls": 14,
+    "seconds": 47.3
+  }
+}
